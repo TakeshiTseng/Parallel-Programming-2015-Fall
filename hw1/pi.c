@@ -49,13 +49,13 @@ int main(int argc, const char *argv[])
     pthread_t* thread = malloc(sizeof(pthread_t) * num_thread);
     points_in_circle = malloc(sizeof(unsigned long long) * num_thread);
 
+    total_points = (total_points / num_thread) * num_thread;
     for(c=0; c<num_thread; c++) {
         int* arg = malloc(sizeof(int));
         *arg = c; // tid
         tmp += total_points / num_thread;
         pthread_create(&thread[c], NULL, cal_thread, arg);
     }
-    total_points = tmp;
 
     unsigned long long total_point_in_circle = 0;
     for(c=0; c<num_thread; c++) {
