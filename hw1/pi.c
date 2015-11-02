@@ -12,13 +12,13 @@ int num_thread = 1;
 void* cal_thread(void* arg) {
     int tid = *((int*) arg);
     int *seed = malloc(sizeof(int));
-    *seed = ((int)time(NULL) ^ tid);
+    *seed = (time(NULL) + tid * 10);
     int c;
     int np = total_points / num_thread;
     points_in_circle[tid] = 0;
     for(c=0; c<np; c++) {
-        double x = (double)rand_r(arg) / RAND_MAX;
-        double y = (double)rand_r(arg) / RAND_MAX;
+        double x = (double)rand_r(seed) / RAND_MAX;
+        double y = (double)rand_r(seed) / RAND_MAX;
         double r2 = x*x + y*y;
         if(r2 <= 1) {
             ++points_in_circle[tid];
@@ -41,6 +41,9 @@ int main(int argc, const char *argv[])
     if(total_points <= 0) {
         printf("num of tosses should be larger than 0");
         return -1;
+    }
+    if(total_points < num_thread) {
+        total_points = num_thread;
     }
 
     pthread_t* thread = malloc(sizeof(pthread_t) * num_thread);
