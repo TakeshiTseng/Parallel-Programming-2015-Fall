@@ -1,3 +1,12 @@
+/********************************
+ * Develop by Tseng Yi
+ *
+ * Compile the code:
+ * $ gcc -o pi pi.c -lpthread -O3
+ *
+ ********************************/
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
