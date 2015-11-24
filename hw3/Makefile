@@ -14,4 +14,4 @@ integrate:
 	$(CC) integrate.c -lm -o ./bin/integrate
 
 run_prime:
-	mpirun -host $(MASTER),$(SLAVE1),$(SLAVE2),$(SLAVE3) ./bin/prime 1000
+	mpirun -host $(MASTER),$(SLAVE1),$(SLAVE2),$(SLAVE3) ./bin/prime 1000000
