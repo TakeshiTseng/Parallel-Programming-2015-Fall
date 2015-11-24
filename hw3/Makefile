@@ -15,3 +15,6 @@ integrate:
 
 run_prime:
 	mpirun -host $(MASTER),$(SLAVE1),$(SLAVE2),$(SLAVE3) ./bin/prime 1000000
+
+run_integrate:
+	mpirun -host $(MASTER),$(SLAVE1),$(SLAVE2),$(SLAVE3) ./bin/integrate 1000000
