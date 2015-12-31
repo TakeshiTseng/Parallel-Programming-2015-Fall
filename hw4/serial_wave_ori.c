@@ -7,28 +7,27 @@
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
-#include <cuda.h>
 
 #define MAXPOINTS 1000000
 #define MAXSTEPS 1000000
 #define MINPOINTS 20
 #define PI 3.14159265
-#define SQTAU 0.09
 
 void check_param(void);
 void init_line(void);
 void update (void);
 void printfinal (void);
+
 int nsteps,                 	/* number of time steps */
     tpoints, 	     		/* total points along string */
     rcode;                  	/* generic return code */
-float values[MAXPOINTS+2], 	/* values at time t */
-      oldval[MAXPOINTS+2], 	/* values at time (t-dt) */
-      newval[MAXPOINTS+2]; 	/* values at time (t+dt) */
+float  values[MAXPOINTS+2], 	/* values at time t */
+       oldval[MAXPOINTS+2], 	/* values at time (t-dt) */
+       newval[MAXPOINTS+2]; 	/* values at time (t+dt) */
 
 
 /**********************************************************************
- * Checks input values from parameters
+ *	Checks input values from parameters
  *********************************************************************/
 void check_param(void)
 {
@@ -62,17 +61,17 @@ void check_param(void)
 void init_line(void)
 {
     int i, j;
-    float x, k, tmp, fac;
+    float x, fac, k, tmp;
 
     /* Calculate initial values based on sine curve */
+    fac = 2.0 * PI;
     k = 0.0; 
-    fac = 2 * PI;
     tmp = tpoints - 1;
     for (j = 1; j <= tpoints; j++) {
         x = k/tmp;
         values[j] = sin (fac * x);
         k = k + 1.0;
-    }
+    } 
 
     /* Initialize old values array */
     for (i = 1; i <= tpoints; i++) 
@@ -82,53 +81,42 @@ void init_line(void)
 /**********************************************************************
  *      Calculate new values using wave equation
  *********************************************************************/
-__global__ void cu_do_match(float* nv, float* ov, float* v)
+void do_math(int i)
 {
-    int j = blockIdx.x * blockDim.x + threadIdx.x + 1;
-    //float dtime, c, dx, tau, sqtau;
-    //dtime = 0.3;
-    //c = 1.0;
-    //dx = 1.0;
-    //tau = (c * dtime / dx);
-    //sqtau = tau * tau;
+    float dtime, c, dx, tau, sqtau;
 
-    nv[j] = (2.0 * v[j]) - ov[j] + (SQTAU *  (-2.0) * v[j]);
-    ov[j] = v[j];
-    v[j] = nv[j];
+    dtime = 0.3;
+    c = 1.0;
+    dx = 1.0;
+    tau = (c * dtime / dx);
+    sqtau = tau * tau;
+    newval[i] = (2.0 * values[i]) - oldval[i] + (sqtau *  (-2.0)*values[i]);
 }
-
 
 /**********************************************************************
  *     Update all values along line a specified number of times
  *********************************************************************/
 void update()
 {
-    int i;
-    float* nv;
-    float* ov;
-    float* v;
-
-    cudaMalloc((void**) &nv, MAXPOINTS + 2);
-    cudaMalloc((void**) &ov, MAXPOINTS + 2);
-    cudaMalloc((void**) &v, MAXPOINTS + 2);
-    cudaMemcpy(nv, newval, sizeof(float)*tpoints, cudaMemcpyHostToDevice);
-    cudaMemcpy(ov, oldval, sizeof(float)*tpoints, cudaMemcpyHostToDevice);
-    cudaMemcpy(v, values, sizeof(float)*tpoints, cudaMemcpyHostToDevice);
+    int i, j;
 
     /* Update values for each time step */
     for (i = 1; i<= nsteps; i++) {
         /* Update points along line for this time step */
-        cu_do_match<<<1, tpoints>>>(nv, ov, v);
+        for (j = 1; j <= tpoints; j++) {
+            /* global endpoints */
+            if ((j == 1) || (j  == tpoints))
+                newval[j] = 0.0;
+            else
+                do_math(j);
+        }
+
+        /* Update old values with new values */
+        for (j = 1; j <= tpoints; j++) {
+            oldval[j] = values[j];
+            values[j] = newval[j];
+        }
     }
-
-    cudaMemcpy(newval, nv, sizeof(float)*tpoints, cudaMemcpyDeviceToHost);
-    cudaMemcpy(oldval, ov, sizeof(float)*tpoints, cudaMemcpyDeviceToHost);
-    cudaMemcpy(values, v, sizeof(float)*tpoints, cudaMemcpyDeviceToHost);
-
-    cudaFree(nv);
-    cudaFree(ov);
-    cudaFree(v);
-
 }
 
 /**********************************************************************
