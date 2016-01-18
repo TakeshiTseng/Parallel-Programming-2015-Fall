@@ -142,6 +142,37 @@ Chiang Sheng Yi\\
 	passing as MPI does. For the above reasons, OpenMP is a good choice for 
 	out project.
 	
+\section{Proposed Solution}
+\subsection{Single thread/process solution}
+	To simply analyze code, we use \textit{regular expression}[4] to convert source
+	code into \textbf{tokens}, and use these tokens to get information of each line
+	of source code. For example, follow expression shows the regular expression of function call: 
+	\begin{displaymath}
+		[a-zA-Z_][a-zA-Z0-9_]+(.*);
+	\end{displaymath}
+	After convert code into tokens, we can record the number of each tokens. Also
+	record function or variable names.
+	Follow code is the basic algorithm of code analyzing.
+	\begin{algorithm}[h]
+		\caption{Single thread code analyze}
+		\begin{algorithmic}[1]
+			\Require
+				$get_token(x)$: parse code and get token list;
+				$num_lines$: total lines of source code;
+				$s$: source code file pointer;
+				$next\_line(s)$: get next line from source code;
+			\State initial $current_line=0$ and $token\_table is empty$;
+			\Repeat
+				\State $line$ = $next\_line(s)$
+				\State $token\_list$ = $get\_token(line)$
+				\For{each $token \in $token\_list}
+					\State $token\_table[$token]++
+				\EndFor
+				\State $current\_line$ = $current\_line + 1$
+			\Until{$current\_line \ne num\_lines$}
+		\end{algorithmic}
+	\end{algorithm}
+
 \section{Related work}
 
 	\textbf{quantifiedcode}[3] provide online python code analyzer, it can let developer 
