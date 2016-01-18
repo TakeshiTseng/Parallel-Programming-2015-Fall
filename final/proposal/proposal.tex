@@ -39,18 +39,23 @@ Chiang Sheng Yi\\
 \keywords{Parallel programming, pthread, code analyzing}
 
 \section{Introduction}
+\subsection{Background}
        Source code optimizing is one of key technique of compiler. 
        It's important to optimize source code for better performance, 
        less memory usage\ldots as so on. It's not enough by optimizing 
        source code by using compiler. We need to change the source 
-       code and find the better way to implement our program. By 
-       using simple analyzing program, we can find which statement we 
-       use a lot, how many local variable we create, or how many useless 
-       function we write. However, it cost too much times to analyze source 
-       code while there exist a lots lines in our code, for example Linux kernel.
-       We introduce a source code analyzer for million-line source code
-       by using multi-thread technique, and compare the performance with 
-       single thread analyzer
+       code and find the better way to implement our program. 
+\subsection{Importance}
+	By using simple analyzing program, we can find which statement we 
+	use a lot, how many local variable we create, or how many useless 
+	function we write. With those analyze data, developers can improve performance,
+	decrease memory usage by reduce function calls or memory allocate.
+\subsection{Motivation}
+	However, it cost too much times to analyze source code while there
+	exist a lots lines in our code, for example Linux kernel.
+	We introduce a source code analyzer for million-line source code
+	by using multi-thread technique, and compare the performance with 
+	single thread analyzer.
 
 
 \section{The problem}
