@@ -9,7 +9,7 @@
 % April 22nd. 2009 - Inserted various bug-fixes and improvements - Gerry
 %
 % To produce Type 1 fonts in the document plus allow for 'normal LaTeX accenting' in the critical areas;
-% title, author block, section-heads, etc. etc. 
+% title, author block, section-heads, etc. etc.
 % i.e. the whole purpose of this version update is to NOT resort to 'inelegant accent patches'.
 % After much research, three extra .sty packages were added to the the tail (ae, aecompl, aeguill) to solve,
 % in particular, the accenting problem(s). We _could_ ask authors (via instructions/sample file) to 'include' these in
@@ -72,12 +72,12 @@
 %%%     2pc, hence columns are 20pc wide and 55.5pc tall.  (6pc =3D 1in, approx)
 %%% 3)  First page has title information, and an extra 6pc of space at the
 %%%     bottom of the first column for the ACM copyright notice.
-%%% 4)  Text is 9pt on 10pt baselines; titles (except main) are 9pt bold.
+%%% 4)  Text is 12pt on 10pt baselines; titles (except main) are 12pt bold.
 %%%
 %%%
 %%% There are a few restrictions you must observe:
 %%%
-%%% 1)  You cannot change the font size; ACM wants you to use 9pt.
+%%% 1)  You cannot change the font size; ACM wants you to use 12pt.
 %%% 3)  You must start your paper with the \maketitle command.  Prior to the
 %%%     \maketitle you must have \title and \author commands.  If you have a
 %%%     \date command it will be ignored; no date appears on the paper, since
@@ -105,7 +105,7 @@
 %%%
 %%% WARNING:
 %%% Some dvi-ps converters heuristically allow chars to drift from their
-%%% true positions a few pixels. This may be noticeable with the 9pt sans-serif
+%%% true positions a few pixels. This may be noticeable with the 12pt sans-serif
 %%% bold font used for section headers.
 %%% You may turn this hackery off via the -e option:
 %%%     dvips -e 0 foo.dvi >foo.ps
@@ -221,13 +221,13 @@
 \normallineskip 2pt
 \def\baselinestretch{1}
 
-\abovedisplayskip 9pt plus2pt minus4.5pt%
+\abovedisplayskip 12pt plus2pt minus4.5pt%
 \belowdisplayskip \abovedisplayskip
 \abovedisplayshortskip  \z@ plus3pt%
 \belowdisplayshortskip  5.4pt plus3pt minus3pt%
 \let\@listi\@listI     % Setting of \@listi added 9 Jun 87
 
-\def\small{\@setsize\small{9pt}\viiipt\@viiipt
+\def\small{\@setsize\small{12pt}\viiipt\@viiipt
 \abovedisplayskip 7.6pt plus 3pt minus 4pt%
 \belowdisplayskip \abovedisplayskip
 \abovedisplayshortskip \z@ plus2pt%
@@ -236,7 +236,7 @@
 \topsep 4pt plus 2pt minus 2pt\parsep 2pt plus 1pt minus 1pt
 \itemsep \parsep}}
 
-\def\footnotesize{\@setsize\footnotesize{9pt}\ixpt\@ixpt
+\def\footnotesize{\@setsize\footnotesize{12pt}\ixpt\@ixpt
 \abovedisplayskip 6.4pt plus 2pt minus 4pt%
 \belowdisplayskip \abovedisplayskip
 \abovedisplayshortskip \z@ plus 1pt%
@@ -301,10 +301,10 @@
 %\newfont{\affaddr}{arial at 10pt} % was arialr originally - now is arial
 %\newfont{\affaddrit}{ariali at 10pt} %13 Jan 00 gkmt
 %\newfont{\eaddfnt}{arial at 12pt} % was arialr originally - now is arial
-%\newfont{\ixpt}{times at 9pt} % was timenrr originally - now is times
+%\newfont{\ixpt}{times at 12pt} % was timenrr originally - now is times
 %\newfont{\confname}{timesi at 8pt} % was timenrri - now is timesi
 %\newfont{\crnotice}{times at 8pt} % was timenrr originally - now is times
-%\newfont{\ninept}{times at 9pt} % was timenrr originally - now is times
+%\newfont{\ninept}{times at 12pt} % was timenrr originally - now is times
 % *********************************************
 %  -- End of block A --
 %
@@ -316,7 +316,7 @@
 \newfont{\secfnt}{ptmb8t at 12pt}
 \newfont{\secit}{ptmbi8t at 12pt}    %13 Jan 00 gkmt
 \newfont{\subsecfnt}{ptmri8t at 11pt}
-\newfont{\subsecit}{ptmbi8t at 11pt}  % 
+\newfont{\subsecit}{ptmbi8t at 11pt}  %
 \newfont{\ttlfnt}{phvb8t at 18pt}
 \newfont{\ttlit}{phvbo8t at 18pt}    % GM 2/4/2000
 \newfont{\subttlfnt}{phvr8t at 14pt}
@@ -327,10 +327,10 @@
 \newfont{\affaddr}{phvr8t at 10pt}
 \newfont{\affaddrit}{phvro8t at 10pt} % GM 2/4/2000
 \newfont{\eaddfnt}{phvr8t at 12pt}
-\newfont{\ixpt}{ptmr8t at 9pt}
+\newfont{\ixpt}{ptmr8t at 12pt}
 \newfont{\confname}{ptmri8t at 8pt}
 \newfont{\crnotice}{ptmr8t at 8pt}
-\newfont{\ninept}{ptmr8t at 9pt}
+\newfont{\ninept}{ptmr8t at 12pt}
 % +++++++++++++++++++++++++++++++++++++++++++++
 % -- End of block B --
 
@@ -359,8 +359,8 @@
 \leftmarginii 19.8pt    % > \labelsep + width of '(m)'
 \leftmarginiii 16.8pt   % > \labelsep + width of 'vii.'
 \leftmarginiv 15.3pt    % > \labelsep + width of 'M.'
-\leftmarginv 9pt
-\leftmarginvi 9pt
+\leftmarginv 12pt
+\leftmarginvi 12pt
 
 \leftmargin\leftmargini
 \labelsep 4.5pt
@@ -376,12 +376,12 @@
 \def\@listii{\leftmargin\leftmarginii
    \labelwidth\leftmarginii\advance\labelwidth-\labelsep
    \topsep 3.6pt plus 2pt minus 1pt
-   \parsep 1.8pt plus 0.9pt minus 0.9pt
+   \parsep 1.8pt plus 0.12pt minus 0.12pt
    \itemsep \parsep}
 
 \def\@listiii{\leftmargin\leftmarginiii
     \labelwidth\leftmarginiii\advance\labelwidth-\labelsep
-    \topsep 1.8pt plus 0.9pt minus 0.9pt
+    \topsep 1.8pt plus 0.12pt minus 0.12pt
     \parsep \z@ \partopsep 1pt plus 0pt minus 1pt
     \itemsep \topsep}
 
@@ -519,7 +519,7 @@
   \hrule width .5\columnwidth   % (was .4) updated Gerry March 20 2007
   \kern 2.6\p@}                 % The \hrule has default height of .4pt % (was .4) updated Gerry March 20 2007
 % ------
-\long\def\@makefntext#1{\noindent 
+\long\def\@makefntext#1{\noindent
 %\hbox to .5em{\hss$^{\@thefnmark}$}#1}   % original
 \hbox to .5em{\hss\textsuperscript{\@thefnmark}}#1}  % C. Clifton / GM Oct. 2nd. 2002
 % -------
@@ -843,7 +843,7 @@
 \end@float}
 
 \def\@toappear{} % Default setting blank - commands below change this.
-\long\def\toappear#1{\def\@toappear{\parbox[b]{20pc}{\baselineskip 9pt#1}}}
+\long\def\toappear#1{\def\@toappear{\parbox[b]{20pc}{\baselineskip 12pt#1}}}
 \def\toappearbox#1{\def\@toappear{\raisebox{5pt}{\framebox[20pc]{\parbox[b]{19pc}{#1}}}}}
 
 \newtoks\conf
@@ -1238,7 +1238,7 @@
 %\def\citeA{\start@cite10}
 \DeclareRobustCommand\citeA{\start@cite10}		% January 2008
 \def\citeANP{\citeA*}
-%\def\shortcite{\start@cite23}				
+%\def\shortcite{\start@cite23}
 \DeclareRobustCommand\shortcite{\start@cite23}		% January 2008
 \def\shortciteNP{\shortcite*}
 %\def\shortciteA{\start@cite20}
@@ -1319,14 +1319,14 @@
 }
 %\let\@biblabel\@gobble   % Dec. 2008 - Gerry
 % ----
-\def\@biblabelnum#1{[#1]} % Gerry's solution #1 - for Natbib 
+\def\@biblabelnum#1{[#1]} % Gerry's solution #1 - for Natbib
 \let\@biblabel=\@biblabelnum  % Gerry's solution #1 - for Natbib
 \def\newblock{\relax} % Gerry Dec. 2008
 % ---
 \newdimen\bibindent
 \setcounter{enumi}{1}
 \bibindent=0em
-\def\thebibliography#1{% 
+\def\thebibliography#1{%
 \ifnum\addauflag=0\addauthorsection\global\addauflag=1\fi
      \section[References]{%    <=== OPTIONAL ARGUMENT ADDED HERE
         {References} % was uppercased but this affects pdf bookmarks (SP/GM October 2004)
@@ -1398,19 +1398,19 @@
 \def\titlenote{\@ifnextchar[\@xtitlenote{\stepcounter\@mpfn
 \global\advance\titlenotecount by 1
 \ifnum\titlenotecount=1
-    \raisebox{9pt}{$\ast$}
+    \raisebox{12pt}{$\ast$}
 \fi
 \ifnum\titlenotecount=2
-    \raisebox{9pt}{$\dagger$}
+    \raisebox{12pt}{$\dagger$}
 \fi
 \ifnum\titlenotecount=3
-    \raisebox{9pt}{$\ddagger$}
+    \raisebox{12pt}{$\ddagger$}
 \fi
 \ifnum\titlenotecount=4
-\raisebox{9pt}{$\S$}
+\raisebox{12pt}{$\S$}
 \fi
 \ifnum\titlenotecount=5
-\raisebox{9pt}{$\P$}
+\raisebox{12pt}{$\P$}
 \fi
          \@titlenotetext
 }}
@@ -1463,11 +1463,11 @@
 % font. Conversely the letter-character font would be correct but, e.g. a 'bar' would appear superimposed on the
 % character instead of, say, an unlaut/diaresis. Sometimes the letter-character would NOT appear at all.
 % Using [T1]{fontenc} outright was not an option as this caused 99% of the authors to 'produce' a Type-3 (bitmapped)
-% PDF file - useless for production. 
+% PDF file - useless for production.
 %
-% For proper (font) accenting we NEED these packages to be part of the .cls file i.e. 'ae', 'aecompl' and 'aeguil' 
+% For proper (font) accenting we NEED these packages to be part of the .cls file i.e. 'ae', 'aecompl' and 'aeguil'
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-%% This is file `ae.sty' 
+%% This is file `ae.sty'
 \def\fileversion{1.3}
 \def\filedate{2001/02/12}
 \NeedsTeXFormat{LaTeX2e}
@@ -1488,7 +1488,7 @@
     \renewcommand{\ttdefault}{aett}
 \fi
 \endinput
-%% 
+%%
 %% End of file `ae.sty'.
 %
 %
@@ -1497,7 +1497,7 @@
 \NeedsTeXFormat{LaTeX2e}
 %\ProvidesPackage{aecompl}[\filedate\space\fileversion\space   % GM
 %T1 Complements for AE fonts (D. Roegel)]                      % GM -- keeping the log file clean(er)
- 
+
 \def\@ae@compl#1{{\fontencoding{T1}\fontfamily{cmr}\selectfont\symbol{#1}}}
 \def\guillemotleft{\@ae@compl{19}}
 \def\guillemotright{\@ae@compl{20}}
@@ -1517,18 +1517,18 @@
 \endinput
 %
 %
-%% This is file `aeguill.sty' 
+%% This is file `aeguill.sty'
 % This file gives french guillemets (and not guillemots!)
-% built with the Polish CMR fonts (default), WNCYR fonts, the LASY fonts 
-% or with the EC fonts. 
+% built with the Polish CMR fonts (default), WNCYR fonts, the LASY fonts
+% or with the EC fonts.
 % This is useful in conjunction with the ae package
 % (this package loads the ae package in case it has not been loaded)
 %  and with or without the french(le) package.
 %
 % In order to get the guillemets, it is necessary to either type
 % \guillemotleft and \guillemotright, or to use an 8 bit encoding
-% (such as ISO-Latin1) which selects these two commands, 
-% or, if you use the french package (but not the frenchle package), 
+% (such as ISO-Latin1) which selects these two commands,
+% or, if you use the french package (but not the frenchle package),
 % to type << or >>.
 %
 % By default, you get the Polish CMR guillemets; if this package is loaded
@@ -1542,7 +1542,7 @@
 % and these guillemets are very close in shape to the EC guillemets.
 % There are no free Type 1 versions of the EC fonts.
 %
-% Support for Polish CMR guillemets was kindly provided by 
+% Support for Polish CMR guillemets was kindly provided by
 % Rolf Niepraschk <niepraschk@ptb.de> in version 0.99 (2000/05/22).
 % Bernd Raichle provided extensive simplifications to the code
 % for version 1.00.
@@ -1599,12 +1599,12 @@
   \def\selectguillfont{\fontencoding{T1}\fontfamily{#1}\selectfont}%
   \def\@oguills{{\selectguillfont\symbol{19}}}%
   \def\@fguills{{\selectguillfont\symbol{20}}}%
-  } 
+  }
 
 \newcommand{\aeguills}{%
   \ae@guills
   % We redefine \guillemotleft and \guillemotright
-  % in order to catch them when they are used 
+  % in order to catch them when they are used
   % with \DeclareInputText (in latin1.def for instance)
   % We use \auxWARNINGi as a safe indicator that french.sty is used.
   \gdef\guillemotleft{\ifx\auxWARNINGi\undefined
@@ -1666,5 +1666,3 @@
 
 \endinput
 %
-
-
