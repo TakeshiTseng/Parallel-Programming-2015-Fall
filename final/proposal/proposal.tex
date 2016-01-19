@@ -209,7 +209,8 @@ Follow code is the basic algorithm of code analyzing by using OpenMP.
 					\State $token\_table[$thread\_id][$token]++$
 				\EndFor
 				\State $current\_line$ = $current\_line + 1$
-			\Until{$current\_line \ne num\_lines$}
+			\Until{$current\_line = num\_lines$}
+
 			\For{each $token \in $token\_list}
 				\State $thread\_id = 0$
 				\While{$thread\_id \ne num\_threads$}
