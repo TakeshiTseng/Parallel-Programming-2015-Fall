@@ -188,6 +188,38 @@ Chiang Sheng Yi\\
 	\end{Bmatrix}
 	\end{displaymath}
 	
+/subsubsection{OpenMP}
+We have tried to parallel serial code of this project by using OpenMP. When we did homework 2, there were many for loop so we can easily use \textbf{\#pragma omp parallel for} to speed up many times. In this project, we have no for loop in serial code, so we divide the code that we want to analyze into n part (n, number of threads) and dispatch each part to the thread. We just use \textbf{\#pragma omp parallel} to let each thread do their task in parallel. The heaviest load in our project is the function named \textbf{get\_token()}. In order to avoid the race condition, we use one more dimension to store data from threads.
+Follow code is the basic algorithm of code analyzing by using OpenMP.
+\begin{algorithm}[h]
+		\caption{Code analyze by using OpenMP}
+		\begin{algorithmic}[1]
+			\Require
+				$get\_token(x)$: parse code and get token list;
+				$num\_lines$: total lines of source code;
+				$s$: source code file pointer;
+				$num\_threads$: total number of threads;
+				$next\_line(s)$: get next line from source code;
+			\State initial $current\_line=0$ and $token\_table is empty$;
+			\State \#pragma omp parallel
+			\Repeat
+				\State $line$ = $next\_line(s)$
+				\State $token\_list$ = $get\_token(line)$
+				\For{each $token \in $token\_list}
+					\State $token\_table[$thread\_id][$token]++$
+				\EndFor
+				\State $current\_line$ = $current\_line + 1$
+			\Until{$current\_line \ne num\_lines$}
+			\For{each $token \in $token\_list}
+				\State $thread\_id = 0$
+				\While{$thread\_id \ne num\_threads$}
+					\State $token\_table_{token}$ = $token\_table_{token}$ + $parallel\_token\_table_{thread\_id\|token}$
+				\EndWhile
+			\EndFor
+		\end{algorithmic}
+\end{algorithm}
+
+
 \section{Related work}
 
 	\textbf{quantifiedcode}[3] provide online python code analyzer, it can let developer 
