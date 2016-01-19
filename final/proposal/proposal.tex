@@ -184,6 +184,52 @@ Chiang Sheng Yi\\
 	\begin{displaymath}
 	block\_width = \frac{number\_of\_lines}{number\_of\_threads}
 	\end{displaymath}
+	While the thread calculate the width of each block, calculate offset by using equation below:
+	\begin{displaymath}
+	block\_offset = thread\_id \times block\_width
+	\end{displaymath}
+	Each pthread thread function is like single thread program, the difference between single thread
+	and multi-thread program is that multi-thread program contains a \textit{merge} state, we use
+	global variable to store result data. To avoid race condition, we use different address of memory
+	for different thread, thread will not access other thread's data. The following algorithm shows
+	the progress for analyze source code by using pthread.
+	\begin{algorithm}[h]
+		\caption{Code analyze by using Pthread}
+		\begin{algorithmic}[1]
+			\Require
+				$get\_token(x)$: parse code and get token list;
+				$num\_lines$: total lines of source code;
+				$thread\_id$: Thread ID;
+				$num\_threads$: total number of threads;
+				$s$: source code file pointer;
+				$next\_line(s)$: get next line from source code;
+
+			\Function {ANALYZE\_FUNC}{thread\_id}
+				\State Initial $current\_line=0$ and $token\_table = empty$;
+				\State $width = num\_lines \div num\_threads;$
+				\State $offset = width \times thread\_id;$
+				\State $current\_line = offset;$
+				\While{$current\_line \ne offset + width$}
+					\State $line$ = $next\_line(s)$
+					\State $token\_list$ = $get\_token(line)$
+					\For{each $token \in $token\_list}
+						\State $token\_table[token] = token\_table[token] + 1;$
+					\EndFor
+					\State $current\_line = current\_line + 1;$
+				\EndWhile
+				\State $global\_token\_table[thread\_id] = token\_table;$
+			\EndFunction
+			\State Initial $global\_token\_table = empty table;$
+			\For{$thread\_id \in \{0...num\_threads\}$}
+				\State $craete\_thread(anal\_thread, thread\_id);$
+			\EndFor
+			\For{$thread\_id \in \{0...num\_threads\}$}
+				\State $join\_thread(ANALYZE\_FUNC, thread\_id);$
+			\EndFor
+			\State Merge global\_token\_table;
+		\end{algorithmic}
+	\end{algorithm}
+
 	
 \subsubsection{OpenMP}
 We have tried to parallel serial code of this project by using OpenMP. When we did homework 2, there were many for loop so we can easily use \textbf{\#pragma omp parallel for} to speed up many times. In this project, we have no for loop in serial code, so we divide the code that we want to analyze into n part (n, number of threads) and dispatch each part to the thread. We just use \textbf{\#pragma omp parallel} to let each thread do their task in parallel. The heaviest load in our project is the function named \textbf{get\_token()}. In order to avoid the race condition, we use one more dimension to store data from threads.
