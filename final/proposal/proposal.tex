@@ -264,8 +264,37 @@ Follow code is the basic algorithm of code analyzing by using OpenMP.
 		\end{algorithmic}
 \end{algorithm}
 
-
 \subsubsection{MPI}
+MPI is a language-independent communications protocol used for parallel programming. It's a message-passing application, and it's goals are high performance, scalability, and portability. 
+First, should include the header files "mpi.h". At the begin of the program, need to Initialize MPI environment by this function "MPI\_Init". At the end of the program, need to terminate MPI execution environment by this function "MPI\_Finalize()".
+Also, we use MPI\_Comm\_size to determine the size of the group associated with a communicator and MPI\_Comm\_rank to return the rank of calling process. After different parallel process deal with its work. MPI\_Reduce will combine the operands stored in the memory. It is a collective communication call where all the processes in a communicator.
+\begin{algorithm}[h]
+\caption{Code analyze by using MPI}
+\begin{algorithmic}[1]
+\Require
+$get\_token(x)$: parse code and get token list;
+$num\_lines$: total lines of source code;
+$s$: source code file pointer;
+$num\_threads$: total number of threads;
+$next\_line(s)$: get next line from source code;
+			\State initial $current\_line=0$ and $token\_table is empty$;
+			\State initiate MPI
+            \State $line$ = $next\_line(s)$
+			\State $token\_list$ = $get\_token(line)$
+			\If{parent process}
+				\For {each $token \in $token\_list}
+					\State $token\_table[$token]++
+				\EndFor
+			\EndIf
+			\If{child processes}
+				\For {each $token \in $token\_list}
+					\State $token\_table[$token]++
+				\EndFor
+			\EndIf
+			\State Reduce result by using MPI
+		\end{algorithmic}
+\end{algorithm}
+
 
 \section{Experimental Methodology}
 \subsection{Test}
