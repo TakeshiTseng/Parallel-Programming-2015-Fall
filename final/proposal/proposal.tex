@@ -201,7 +201,7 @@ Follow code is the basic algorithm of code analyzing by using OpenMP.
 				$num\_threads$: total number of threads;
 				$next\_line(s)$: get next line from source code;
 			\State initial $current\_line=0$ and $token\_table is empty$;
-			\State \#pragma omp parallel
+			\State Initiate OpenMP parallel loop
 			\Repeat
 				\State $line$ = $next\_line(s)$
 				\State $token\_list$ = $get\_token(line)$
