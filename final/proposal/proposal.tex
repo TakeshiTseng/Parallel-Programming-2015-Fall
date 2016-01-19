@@ -212,6 +212,7 @@ Follow code is the basic algorithm of code analyzing by using OpenMP.
 			\Until{$current\_line = num\_lines$}
 
 			\For{each $token \in $token\_list}
+			\Comment Synchronize data between slave thread to main thread
 				\State $thread\_id = 0$
 				\While{$thread\_id \ne num\_threads$}
 					\State $token\_table_{token}$ = $token\_table_{token}$ + $parallel\_token\_table_{thread\_id\|token}$
