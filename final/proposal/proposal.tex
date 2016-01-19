@@ -188,7 +188,7 @@ Chiang Sheng Yi\\
 	\end{Bmatrix}
 	\end{displaymath}
 	
-/subsubsection{OpenMP}
+\subsubsection{OpenMP}
 We have tried to parallel serial code of this project by using OpenMP. When we did homework 2, there were many for loop so we can easily use \textbf{\#pragma omp parallel for} to speed up many times. In this project, we have no for loop in serial code, so we divide the code that we want to analyze into n part (n, number of threads) and dispatch each part to the thread. We just use \textbf{\#pragma omp parallel} to let each thread do their task in parallel. The heaviest load in our project is the function named \textbf{get\_token()}. In order to avoid the race condition, we use one more dimension to store data from threads.
 Follow code is the basic algorithm of code analyzing by using OpenMP.
 \begin{algorithm}[h]
