@@ -182,10 +182,7 @@ Chiang Sheng Yi\\
 	After the thread get it's ID, the thread calculate default \textit{width} of block, to calculate
 	the width, simply use the equation below:
 	\begin{displaymath}
-	\begin{Bmatrix}
-	\frac{number\_of\_lines}{number\_of\_threads} (1\leq i< number\_of\_threads)\\ 
-	\frac{(number\_of\_lines - 1)\times number\_of\_lines}{number\_of\_threads} (i= number\_of\_threads)
-	\end{Bmatrix}
+	block\_width = \frac{number\_of\_lines}{number\_of\_threads}
 	\end{displaymath}
 	
 \subsubsection{OpenMP}
