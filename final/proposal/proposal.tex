@@ -161,15 +161,15 @@ Chiang Sheng Yi\\
 				$num\_lines$: total lines of source code;
 				$s$: source code file pointer;
 				$next\_line(s)$: get next line from source code;
-			\State initial $current_line=0$ and $token\_table is empty$;
-			\Repeat
+			\State initial $current\_line=0$ and $token\_table is empty$;
+			\While{$current\_line \ne num\_lines$}
 				\State $line$ = $next\_line(s)$
 				\State $token\_list$ = $get\_token(line)$
 				\For{each $token \in $token\_list}
 					\State $token\_table[$token]++
 				\EndFor
 				\State $current\_line$ = $current\_line + 1$
-			\Until{$current\_line \ne num\_lines$}
+			\EndWhile
 		\end{algorithmic}
 	\end{algorithm}
 
