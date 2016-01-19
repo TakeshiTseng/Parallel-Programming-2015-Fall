@@ -298,8 +298,29 @@ $next\_line(s)$: get next line from source code;
 
 \section{Experimental Methodology}
 \subsection{Test}
+	To test it, we encapsulated analyzer into one function, and use this function for different
+	version of parallel method.
+	Second, we deployed our source code into one single machine to ensure that the result
+	is not affect by the environment.
+	To calculate analysis time, we use \textbf{clock} system call to get current clock number
+	and get another clock number after process finished. We use \textit{$clock_{end}$} - \textit{$clock_{start}$}
+	to get execution time, and unit of time is clock.
 \subsection{Input sets}
+	We use Linux kernel[5] source code as our input. For reduce the complexity of testing
+	and the dispatcher, we merge all of the code(.c and .h files) into one file. and we remove
+	unused comment to ensure that there's no meaningless line.
+	We randomly choose 850, 8500, 85000 and 850000 lines in the source code and pass
+	it into our program by using standard input.
 \subsection{Environment}
+	The list below is out environment:
+	\begin{enumerate}
+		\item CPU: Intel(R) Xeon(R) CPU E3-1231 v3 @ 3.40GHz
+		\item Cores: 8
+		\item RAM: 16GB
+		\item HDD: 256GB SSD
+		\item OS: FreeBSD 10.1
+	\end{enumerate}
+	Also, we create new user for experiment to ensure that the environment is clean.
 
 \section{Experimental Results}
 \subsection{The results}
