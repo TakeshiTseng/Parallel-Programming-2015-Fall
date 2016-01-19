@@ -173,6 +173,21 @@ Chiang Sheng Yi\\
 		\end{algorithmic}
 	\end{algorithm}
 
+\subsection{Multithread solution}
+\subsubsection{Pthread}
+	By using pthread, we create a single thread function to analyze one \textbf{block}
+	of the source code. The argument of multi-thread function is the \textit{ID} of the thread.
+	And we also pass \textbf{total lines of source code} and \textbf{number of threads} to
+	thread function by using global variables.
+	After the thread get it's ID, the thread calculate default \textit{width} of block, to calculate
+	the width, simply use the equation below:
+	\begin{displaymath}
+	\begin{Bmatrix}
+	\frac{number\_of\_lines}{number\_of\_threads} (1\leq i< number\_of\_threads)\\ 
+	(number\_of\_lines - 1)\times \frac{number\_of\_lines}{number\_of\_threads} (i= number\_of\_threads)
+	\end{Bmatrix}
+	\end{displaymath}
+	
 \section{Related work}
 
 	\textbf{quantifiedcode}[3] provide online python code analyzer, it can let developer 
