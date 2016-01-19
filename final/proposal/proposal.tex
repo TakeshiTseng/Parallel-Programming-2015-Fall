@@ -45,11 +45,13 @@ Chiang Sheng Yi\\
        less memory usage\ldots as so on. It's not enough by optimizing 
        source code by using compiler. We need to change the source 
        code and find the better way to implement our program. 
+
 \subsection{Importance}
 	By using simple analyzing program, we can find which statement we 
 	use a lot, how many local variable we create, or how many useless 
 	function we write. With those analyze data, developers can improve performance,
 	decrease memory usage by reduce function calls or memory allocate.
+
 \subsection{Motivation}
 	However, it cost too much times to analyze source code while there
 	exist a lots lines in our code, for example Linux kernel.
@@ -65,17 +67,21 @@ Chiang Sheng Yi\\
 	volume of one program. We found that, there are many things that
 	cause low performance for one program, such as increasing number 
 	of recursive function call, or use less memory allocate.
+
 	In this project, we want to calculate number of function calls and 
 	number of \textbf{branch} statement like \textbf{if, switch, while, for}\ldots
 	For single thread analyzer, if there are \textit{N} lines in one source file, 
 	and there exist \textit{W} files in the project, assume that there only one 
 	statement in one line, the time complexity is \textit{O(NW)}. Notice that
 	NW is equals to total lines of the project.
+
 	Next we need to figure out how to parse one line. The simplest way 
-	to know which statement in specific line is using regular expression 
+	to know which statement in specific line is using regular expression[4] 
 	and searching keywords, the time complexity of text searching is 
 	\textit{O(TP)} where \textit{T} is length of text(line) and \textit{P} is length
-	of pattern. Now we notice that each line, or file can be independent 
+	of pattern.
+
+	Now we notice that each line, or file can be independent 
 	if we only need to calculate specific statements or function calls, so
 	we might improve performance by using parallel programming technique.
 
@@ -84,7 +90,9 @@ Chiang Sheng Yi\\
 	Figure 1 shows the architecture of our program, there exist one dispatcher 
 	and several analyzers, each analyzer will use one thread. Initially, the 
 	dispatcher will scan all the project and create an index of all files, then
-	it will generate multiple thread for analyzer. After generated thread, 
+	it will generate multiple thread for analyzer.
+
+	After generated thread, 
 	dispatcher will send \textbf{block}s into analyzers.
 
 \begin{figure}
@@ -130,18 +138,30 @@ Chiang Sheng Yi\\
 	\caption{Program workflow}
 \end{figure}
 
-\section{Language selection}
+\section{Language/Library selection}
 	In this project, we will use C++ with OpenMP multi-threading library.
 	OpenMP (Open Multi-Processing) is an application programming interface 
 	(API) that supports multi-platform shared memory multiprocessing 
-	programming in C, C++, and Fortran. OpenMP is already built-in library in 
-	C/C++ which is the language we are familiar with. OpenMP can be used on 
-	various accelerators such as GPGPU. Original code statements do not 
+	programming in C, C++, and Fortran.
+
+	OpenMP is already built-in library in C/C++ which is the language we are familiar with.
+	OpenMP can be used on various accelerators such as GPGPU. Original code statements do not 
 	need to be modified when parallelized with OpenMP, this reduces the chance 
-	of inadvertently introducing bugs. OpenMP does not need to deal with message 
-	passing as MPI does. For the above reasons, OpenMP is a good choice for 
-	out project.
+	of inadvertently introducing bugs.
 	
+	OpenMP does not need to deal with message passing as MPI does. For the above 
+	reasons, OpenMP is a good choice for out project.
+
+	The other library we use is MPI[7], MPI is a language-independent communications
+	protocol used for parallel programming. It's a message-passing application, and
+	it's goals are high performance, scalability, and portability.	In our environment, 
+	we use OpenMPI[8] to implement MPI version analyzer.
+	
+	Third parallel library we use is pthread, pthread allowed developers to develop 
+	native multi-thread program and it provide a lot of multi-threading API. Also
+	it's easy to use, all we need to do is define a thread function, and pass argument
+	to it. Pthread library will allocate thread jobs into different CPUs automatically.
+
 \section{Proposed Solution}
 \subsection{Single thread/process solution}
 	To simply analyze code, we use \textit{regular expression}[4] to convert source
@@ -179,6 +199,7 @@ Chiang Sheng Yi\\
 	of the source code. The argument of multi-thread function is the \textit{ID} of the thread.
 	And we also pass \textbf{total lines of source code} and \textbf{number of threads} to
 	thread function by using global variables.
+
 	After the thread get it's ID, the thread calculate default \textit{width} of block, to calculate
 	the width, simply use the equation below:
 	\begin{displaymath}
@@ -190,7 +211,9 @@ Chiang Sheng Yi\\
 	\end{displaymath}
 	Each pthread thread function is like single thread program, the difference between single thread
 	and multi-thread program is that multi-thread program contains a \textit{merge} state, we use
-	global variable to store result data. To avoid race condition, we use different address of memory
+	global variable to store result data.
+
+	To avoid race condition, we use different address of memory
 	for different thread, thread will not access other thread's data. The following algorithm shows
 	the progress for analyze source code by using pthread.
 	\begin{algorithm}[h]
@@ -232,7 +255,12 @@ Chiang Sheng Yi\\
 
 	
 \subsubsection{OpenMP}
-We have tried to parallel serial code of this project by using OpenMP. When we did homework 2, there were many for loop so we can easily use \textbf{\#pragma omp parallel for} to speed up many times. In this project, we have no for loop in serial code, so we divide the code that we want to analyze into n part (n, number of threads) and dispatch each part to the thread. We just use \textbf{\#pragma omp parallel} to let each thread do their task in parallel. The heaviest load in our project is the function named \textbf{get\_token()}. In order to avoid the race condition, we use one more dimension to store data from threads.
+	We have tried to parallel serial code of this project by using OpenMP. When we did homework 2,
+	there were many for loop so we can easily use \textbf{\#pragma omp parallel for} to speed up many times.
+
+In this project, we have no for loop in serial code, so we divide the code that we want to analyze into n part (n, number of threads) and dispatch each part to the thread. We just use \textbf{\#pragma omp parallel} to let each thread do their task in parallel. The heaviest load in our project is the function named \textbf{get\_token()}.
+
+In order to avoid the race condition, we use one more dimension to store data from threads.
 Follow code is the basic algorithm of code analyzing by using OpenMP.
 \begin{algorithm}[h]
 		\caption{Code analyze by using OpenMP}
@@ -265,9 +293,20 @@ Follow code is the basic algorithm of code analyzing by using OpenMP.
 \end{algorithm}
 
 \subsubsection{MPI}
-MPI is a language-independent communications protocol used for parallel programming. It's a message-passing application, and it's goals are high performance, scalability, and portability. 
-First, should include the header files "mpi.h". At the begin of the program, need to Initialize MPI environment by this function "MPI\_Init". At the end of the program, need to terminate MPI execution environment by this function "MPI\_Finalize()".
-Also, we use MPI\_Comm\_size to determine the size of the group associated with a communicator and MPI\_Comm\_rank to return the rank of calling process. After different parallel process deal with its work. MPI\_Reduce will combine the operands stored in the memory. It is a collective communication call where all the processes in a communicator.
+	MPI is a language-independent communications protocol used for parallel programming.
+	It's a message-passing application, and it's goals are high performance, scalability, and portability. 
+
+	First, should include the header files "mpi.h". At the begin of the program, need to Initialize
+	MPI environment by this function "MPI\_Init". At the end of the program, need to terminate
+	MPI execution environment by this function "MPI\_Finalize()".
+
+	Also, we use MPI\_Comm\_size to determine the size of the group associated with a
+	communicator and MPI\_Comm\_rank to return the rank of calling process. After different
+	parallel process deal with its work.
+
+	MPI\_Reduce will combine the operands stored in the memory. It is a collective communication
+	call where all the processes in a communicator.
+
 \begin{algorithm}[h]
 \caption{Code analyze by using MPI}
 \begin{algorithmic}[1]
@@ -302,9 +341,13 @@ $next\_line(s)$: get next line from source code;
 	version of parallel method.
 	Second, we deployed our source code into one single machine to ensure that the result
 	is not affect by the environment.
+
 	To calculate analysis time, we use \textbf{clock} system call to get current clock number
 	and get another clock number after process finished. We use \textit{$clock_{end}$} - \textit{$clock_{start}$}
 	to get execution time, and unit of time is clock.
+
+	We ignore I/O time because we think we should focus on improvement of parallelize analyzing
+	processing, and all of source code were already load into the memory.
 \subsection{Input sets}
 	We use Linux kernel[5] source code as our input. For reduce the complexity of testing
 	and the dispatcher, we merge all of the code(.c and .h files) into one file. and we remove
@@ -324,20 +367,37 @@ $next\_line(s)$: get next line from source code;
 
 \section{Experimental Results}
 \subsection{The results}
- \includegraphics[width=8cm]{result.png}
-\subsection{Analysis the low performance problem}
+Figure 4 shows that we use three different parallel programming technique with eight thread to compare with the single thread version. The x-axis shows that the number of lines in the program, and the y-axis shows that the number of clock.
 
-	
+\begin{figure}
+	\centering
+	\includegraphics[width=8cm]{result.png}
+	\caption{Result of analyzer}
+\end{figure}
+
+
+
+\subsection{Analysis the low performance problem}
+Unfortunately, the performance result is not good as we had expected such as pthread and MPI. When the number of lines increase, only one technique improved in the efficiency which is OpenMP.
+
+The problem we meet should be on the PCRE library. Because the underlying implementation of this library will share the local field with any thread, may cause with each other. So it may not improve by using multi-thread.
+
 \section{Related work}
 
 	\textbf{quantifiedcode}[3] provide online python code analyzer, it can let developer 
 	know how to improve his/her code by giving some suggestions.
 	nowadays, in multiple research, we can find that code analysis can be used to 
 	detect malware software, this kind of static analysis take less resources and time. 
-	It’s much easier than dynamic analysis method.
+	It's much easier than dynamic analysis method.
 
 \section{Conclusions}
-
+	This project shows that the performance improved while using \textbf{OpenMP} to analyzing million-line
+	level source code. The results 	shows that pthread and MPI are slower than the serial version.
+	
+	One of possibilities may be test data is too small that the overhead of create thread takes too much time.
+	Another possibility is that we use PCRE library to parse the pattern we want, maybe there are something
+	underlying implementation shared to be thread safe. Because we use map-reduce-like technique to
+	parallel, we will use Hadoop[6] to implement code analyzer in the future.
 
 \section{References}
 [1] OpenMP: 2015. http://openmp.org/wp/. Accessed: 2015- 11- 03.
@@ -346,8 +406,14 @@ $next\_line(s)$: get next line from source code;
 
 [3] quantifiedcode : 2015. https://www.quantifiedcode.com/. Accessed: 2015- 11- 03.
 
-[4] Regular expression
+[4] Regular expression : https://en.wikipedia.org/wiki/Regular\_expression. Accessed: 2016- 1- 19
 
-[5] Linux kernel
+[5] Linux kernel : https://www.kernel.org/. Accessed: 2016- 1- 19
+
+[6] Apache Hadoop : https://hadoop.apache.org/. Accessed: 2016- 1- 19
+
+[7] MPI : https://en.wikipedia.org/wiki/Message\_Passing\_Interface. Accessed: 2016- 1- 19
+
+[8] Open MPI : http://www.open-mpi.org/. Accessed: 2016- 1- 19
 
 \end{document}
